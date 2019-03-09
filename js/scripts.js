@@ -1,9 +1,11 @@
-const results = 12;
-const cardsGallery = document.querySelector("#gallery");
 const modalBody = document.querySelector("body");
+const cardsGallery = document.querySelector("#gallery");
+const totalResults = 12;
+let allModals = [];
+
 
 const appendGallery = (allEmployees) => {
-    allEmployees.forEach((employee, index) => {
+    allEmployees.forEach((employee) => {
         
         let employeeCard = document.createElement("div");
         employeeCard.classList.add("card");
@@ -39,17 +41,17 @@ const appendGallery = (allEmployees) => {
             <div class="modal-btn-container">
             <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
             <button type="button" id="modal-next" class="modal-next btn">Next</button>
-            </div>`
+            </div>`;
+            allModals.push(employeeModal);
             modalBody.appendChild(employeeModal);
             document.querySelector(".modal-close-btn").addEventListener("click", () => {
-                modalBody.removeChild(employeeModal);
+            modalBody.removeChild(employeeModal);
             });
-/*             document.querySelector("#modal-prev").addEventListener(); */
         });
     });
     
 }
 
-fetch(`https://randomuser.me/api/?results=${results}`)
+fetch(`https://randomuser.me/api/?results=${totalResults}`)
 .then(response => response.json())
 .then(data => appendGallery(data.results))
