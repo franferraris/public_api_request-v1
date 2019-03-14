@@ -1,5 +1,5 @@
 const totalResults = 12;
-const engSpeakingCountries = 'au,ca,ie,nz,us';
+const engSpeakingCountries = "au,ca,ie,nz,us";
 
 const appendGallery = (allEmployees) => {
     
@@ -114,25 +114,32 @@ const appendGallery = (allEmployees) => {
 
     const searchByName = () => {
         let userInput = searchInput.value.toLowerCase();
-        let allEmployeeCards = document.querySelectorAll('.card');
-        let employeeNames = document.querySelectorAll('#name');
-        allEmployeeCards.forEach((e, i) => {
-            e.style.display = 'none';
-          if (employeeNames[i].innerText.includes(userInput)) {
-            e.style.display = '';
+        let allEmployeeCards = document.querySelectorAll(".card");
+        let employeeNames = document.querySelectorAll("#name");
+        for (i = 0; i < allEmployeeCards.length; i++) {
+            allEmployeeCards[i].classList.add("disabled");
+          if (employeeNames[i].innerHTML.includes(userInput)) {
+            allEmployeeCards[i].classList.remove("disabled");
+            allModals[i].querySelector(".modal-btn-container").classList.add("disabled");
           }
-        });
+          if (userInput === "") {
+            allModals[i].querySelector(".modal-btn-container").classList.remove("disabled")  
+          }
+        };     
     }
     
-    document.querySelector('.search-container').innerHTML = `
-    <form action="#" method="get">
+    document.querySelector(".search-container").innerHTML = `
+    <form action="#" method="get" autocomplete="off">
         <input type="search" id="search-input" class="search-input" placeholder="Search...">
         <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
     </form>`;
     const searchBar = document.querySelector("form");
     const searchInput = document.querySelector("#search-input");
 
-    searchBar.addEventListener('submit', (e)=> {
+    searchBar.addEventListener("keyup", (e)=> {
+        searchByName();
+    });
+    searchBar.addEventListener("submit", (e)=> {
         searchByName();
     });
 

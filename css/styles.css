@@ -92,6 +92,7 @@ header h1 {
     border: 1px solid rgba(50, 50, 50, 0.3);
     transition: .4s ease-out;
     overflow: hidden;
+    filter: drop-shadow(0 0 0rem gray) grayscale(50%);
 }
 
 .card-img {
@@ -119,6 +120,11 @@ header h1 {
 
 .cap {
     text-transform: capitalize;
+}
+
+.disabled {
+    opacity: 0.1;
+    pointer-events: none;
 }
 
 
@@ -166,11 +172,11 @@ header h1 {
     margin-top: 35px;
     border-radius: 50%;
     transition: .4s ease-out;
-
 }
 
 .modal-img:hover {
-    width: 300px;
+    box-shadow: 0 0.2rem 1.2rem gray;
+    max-width: 100%;
 }
 
 .modal-name {
@@ -199,7 +205,6 @@ header h1 {
     margin: 10px auto auto;
     background: rgba(255, 255, 255, 1);
     border-radius: 0.25em;
-    border: 1px solid rgba(100, 100, 100, 0.3);
 }
 
 
@@ -260,7 +265,7 @@ header h1 {
     .card:hover {
         background: rgba(255, 255, 255, 1);
         border: 1px solid rgba(50, 50, 50, 0.9);
-        filter: drop-shadow(0 0 2rem gray);
+        filter: drop-shadow(0 0 1rem gray) grayscale(0%);
     }
 
     .card:hover .card-text {
