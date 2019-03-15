@@ -1,5 +1,6 @@
 const totalResults = 12;
 const engSpeakingCountries = "au,ca,ie,nz,us";
+let matchingIndexes = [];
 
 const appendGallery = (allEmployees) => {
     
@@ -77,13 +78,15 @@ const appendGallery = (allEmployees) => {
             let nextButton = employeeModal.querySelector("#modal-next")
     
             prevButton.addEventListener("click", () => {
-                pageBody.removeChild(employeeModal)
-                pageBody.appendChild(allModals[this.index - 1])
+                pageBody.removeChild(employeeModal);
+                let usedIndex = matchingIndexes.indexOf(this.index);
+                pageBody.appendChild(allModals[matchingIndexes[usedIndex -1]]);
             });
     
             nextButton.addEventListener("click", () => {
                 pageBody.removeChild(employeeModal)
-                pageBody.appendChild(allModals[this.index + 1])
+                let usedIndex = matchingIndexes.indexOf(this.index);
+                pageBody.appendChild(allModals[matchingIndexes[usedIndex + 1]]);
             });
     
             if (this.index === 0) {
@@ -108,6 +111,7 @@ const appendGallery = (allEmployees) => {
             employee.dob.date,
             index
             );
+        matchingIndexes.push(index);
         employeeProfile.createModal();
         employeeProfile.createCard();
     });
@@ -116,17 +120,28 @@ const appendGallery = (allEmployees) => {
         let userInput = searchInput.value.toLowerCase();
         let allEmployeeCards = document.querySelectorAll(".card");
         let employeeNames = document.querySelectorAll("#name");
+        matchingIndexes = [];
         for (i = 0; i < allEmployeeCards.length; i++) {
             allEmployeeCards[i].classList.add("disabled");
-          if (employeeNames[i].innerHTML.includes(userInput)) {
-            allEmployeeCards[i].classList.remove("disabled");
-            allModals[i].querySelector(".modal-btn-container").classList.add("disabled");
-          }
-          if (userInput === "") {
-            allModals[i].querySelector(".modal-btn-container").classList.remove("disabled")  
-          }
-        };     
-    }
+            if (employeeNames[i].innerHTML.includes(userInput)) {
+                matchingIndexes.push(i); 
+                allEmployeeCards[i].classList.remove("disabled");
+            }
+        }
+        for (i = 0; i < allEmployeeCards.length; i++) {
+            if (matchingIndexes.indexOf(i) === 0) {
+                allModals[i].querySelector("#modal-prev").classList.add("disabled");
+            } else if (matchingIndexes.indexOf(i) === matchingIndexes.length - 1) {
+                allModals[i].querySelector("#modal-next").classList.add("disabled");
+            }
+
+            if (userInput === "") {
+                allModals[i].querySelector("#modal-prev").classList.remove("disabled")
+                allModals[i].querySelector("#modal-next").classList.remove("disabled")
+            }
+        }
+    };
+
     
     document.querySelector(".search-container").innerHTML = `
     <form action="#" method="get" autocomplete="off">
@@ -142,7 +157,6 @@ const appendGallery = (allEmployees) => {
     searchBar.addEventListener("submit", (e)=> {
         searchByName();
     });
-
 }
 
 fetch(`https://randomuser.me/api/?results=${totalResults}&nat=${engSpeakingCountries}`)
